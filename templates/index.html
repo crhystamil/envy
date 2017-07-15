@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<form action="/search" method="GET">
+    Cuenta:
+    <input name="q"  type="text" >    
+    <input value"search" type="submit">
+</form>
+
+<br >
+<table border="1" >
+    <tr>
+        <th>Creado</th><th>Nombre</th><th>Nick</th><th>Descripcion</th><th>Nro Amigos</th><th>Grafica</th><th>Mas</th>
+    </tr>
+{% for user in users %}
+
+    <tr>
+    <td>{{user[0]}}</td>
+    <td>{{user[1]}}</td>
+    <td>{{user[2]}}</td>
+    <td>{{user[3]}}</td>
+    <td>{{user[4]}}</td>
+    <td><a href="/graph/{{user[6]}}"> Grafica {{user[1]}}</a></td>
+    <td><a href="/user/{{user[5]}}">Mas Info</a></td>
+
+    <tr>
+{% endfor %}
+
+
+
+{% endblock %}

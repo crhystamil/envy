@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block head %}
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.css" rel="stylesheet" type="text/css" />
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.20.0/vis.min.js"></script>
+<style type="text/css">
+    body {
+        font: 10pt arial;
+    }
+    #mynetwork {
+        width: 1280px;
+        height: 1024px;
+        border: 1px solid lightgray;
+        background-color:#333333;
+    }
+</style>
+
+<script>
+    var nodes = null;
+    var edges = null;
+    var network = null;
+
+    // Called when the Visualization API is loaded.
+    function draw() {
+      // create people.
+      // value corresponds with the age of the person
+      var DIR = '../img/indonesia/';
+      nodes = [
+      {id: {{ user[0][0]}}, shape: 'image', image: '{{user[0][2]}}', label:'{{user[0][1]}}'},
+        {% for friend in friends %}
+        {id: {{ friend[0] }},  shape: 'image', image: '{{ friend[2] }}', label:'{{friend[1]}}'},
+        {% endfor %}
+      ];
+
+      // create connections between people
+      // value corresponds with the amount of contact between two people
+      edges = [
+        {% for friend in friends %} 
+            
+      {from: {{ user[0][0] }}, to: {{ friend[0] }}},
+        {% endfor %}
+        {from: 9, to: 16}
+      ];
+
+      // create a network
+      var container = document.getElementById('mynetwork');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+      var options = {
+        nodes: {
+          borderWidth:4,
+          size:15,
+	      color: {
+            border: '#406897',
+            background: '#6AAFFF'
+          },
+          font:{color:'#eeeeee'},
+          shapeProperties: {
+            useBorderWithImage:true
+          }
+        },
+        edges: {
+          color: 'lightgray'
+        }
+      };
+      network = new vis.Network(container, data, options);
+    }
+</script>
+
+{% endblock %}
+{% block body %}
+
+<body onload="draw()">
+
+    <div id="mynetwork" height="1000px"> </div>
+</body>
+{% endblock %}
